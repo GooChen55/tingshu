@@ -2,7 +2,7 @@
 
 完整项目介绍、架构、当前实现进度、MongoDB 示例与启动步骤见 [仓库首页 README](../README.md)。第三方配置字段见 [配置说明](docs/configuration.md)。
 
-基于 Java 17、Spring Boot 3 和 Spring Cloud Alibaba 的听书与音频内容平台后端，采用 Maven 多模块与微服务架构。仓库包含专辑和声音管理、微信登录、用户收听进度、内容搜索、账户充值、订单与微信支付等业务代码，适合学习和实践音频平台的服务拆分与业务开发。
+基于 Java 17、Spring Boot 3 和 Spring Cloud Alibaba 的听书与音频内容平台后端，采用 Maven 多模块与微服务架构。已实现专辑和声音管理、微信登录、用户收听进度、内容搜索及账户初始化；充值、订单与微信支付模块仍有待完成的业务接口，适合学习和实践音频平台的服务拆分与业务开发。
 
 ## 技术栈
 
@@ -10,7 +10,7 @@
 | --- | --- |
 | 开发与构建 | Java 17、Maven、Spring Boot 3.0.5 |
 | 微服务 | Spring Cloud 2022.0.2、Spring Cloud Alibaba、Nacos、Gateway、OpenFeign |
-| 数据与缓存 | MySQL、MyBatis-Plus、Redis |
+| 数据与缓存 | MySQL、MyBatis-Plus、MongoDB、Redis |
 | 搜索与消息 | Elasticsearch、RabbitMQ、Kafka |
 | 文件与音频 | MinIO、腾讯云 VOD |
 | 接口与支付 | Knife4j / OpenAPI 3、微信登录、微信支付 |
