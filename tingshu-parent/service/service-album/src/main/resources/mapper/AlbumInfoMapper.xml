@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.tingshu.album.mapper.AlbumInfoMapper">
+
+
+    <select id="findUserAlbumPage" resultType="com.atguigu.tingshu.vo.album.AlbumListVo">
+        SELECT
+            ai.id album_id,
+            ai.cover_url,
+            ai.album_title,
+            ai.include_track_count,
+            max(if(stat_type='0401', stat_num, 0)) playStatNum,
+            max(if(stat_type='0402', stat_num, 0)) subscribe_stat_num,
+            max(if(stat_type='0403', stat_num, 0)) buy_stat_num,
+            max(if(stat_type='0404', stat_num, 0)) comment_stat_num
+        from album_info ai INNER JOIN album_stat stat
+                                      on stat.album_id = ai.id and stat.is_deleted = 0
+        <where>
+            <if test="vo.userId != null">
+                ai.user_id = #{vo.userId}
+            </if>
+            <if test="vo.status != null and vo.status != ''">
+                and ai.status = #{vo.status}
+            </if>
+            <if test="vo.albumTitle != null and vo.albumTitle != ''">
+                and ai.album_title like concat('%',#{vo.albumTitle},'%')
+            </if>
+            and ai.is_deleted = 0
+        </where>
+        group by ai.id
+        order by ai.create_time desc
+    </select>
+    <select id="getAlbumStatVo" resultType="com.atguigu.tingshu.vo.album.AlbumStatVo">
+        SELECT album_id,
+               max(if(stat_type = '0401', stat_num, 0)) playStatNum,
+               max(if(stat_type = '0402', stat_num, 0)) subscribe_stat_num,
+               max(if(stat_type = '0403', stat_num, 0)) buy_stat_num,
+               max(if(stat_type = '0404', stat_num, 0)) comment_stat_num
+        from album_stat
+        where album_id = #{albumId}
+          and is_deleted = 0
+    </select>
+</mapper>
+

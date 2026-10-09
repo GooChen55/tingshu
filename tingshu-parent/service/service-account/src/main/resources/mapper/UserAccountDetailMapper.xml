@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.tingshu.account.mapper.UserAccountDetailMapper">
+
+	<resultMap id="RechargeInfoMap" type="com.atguigu.tingshu.model.account.UserAccountDetail" autoMapping="true">
+	</resultMap>
+
+	<sql id="columns">
+		id,user_id,title,trade_type,amount,order_no,create_time,update_time,is_deleted
+	</sql>
+
+</mapper>
+

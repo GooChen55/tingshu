@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.tingshu.album.mapper.BaseAttributeMapper">
+
+    <resultMap id="attributeResultMap" type="com.atguigu.tingshu.model.album.BaseAttribute" autoMapping="true">
+        <!--配置一方（标签）字段 属性-->
+        <id column="id" property="id"/>
+        <!--配置多方（标签值）字段 属性-->
+        <collection property="attributeValueList" ofType="com.atguigu.tingshu.model.album.BaseAttributeValue" autoMapping="true">
+            <id column="base_attribute_value_id" property="id"/>
+        </collection>
+    </resultMap>
+
+    <!--根据1级分类ID查询标签列表（包含标签取值）根据1级分类ID查询标签列表（包含标签取值）-->
+    <select id="findAttributeByCategory1Id" resultMap="attributeResultMap">
+        SELECT ba.id,
+               ba.attribute_name,
+               bav.id base_attribute_value_id,
+               bav.attribute_id,
+               bav.value_name
+        from base_attribute ba
+                 INNER JOIN base_attribute_value bav on bav.attribute_id = ba.id and bav.is_deleted = 0
+        where ba.category1_id = #{category1Id}
+          and ba.is_deleted = 0
+    </select>
+</mapper>
+

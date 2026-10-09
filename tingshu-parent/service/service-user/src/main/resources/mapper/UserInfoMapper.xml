@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.tingshu.user.mapper.UserInfoMapper">
+
+	<resultMap id="userInfoMap" type="com.atguigu.tingshu.model.user.UserInfo" autoMapping="true">
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		id,phone,password,wx_open_id,nickname,avatar_url,is_vip,vip_expire_time,gender,birthday,intro,certification_type,certification_status,status,create_time,update_time,is_deleted
+	</sql>
+
+	<sql id="findPageWhere">
+		<where>
+	       <if test="vo.phone != null and vo.phone != ''">
+				and phone like CONCAT('%',#{vo.phone},'%')
+			</if>
+	       <if test="vo.nickname != null and vo.nickname != ''">
+				and nickname like CONCAT('%',#{nickname},'%')
+			</if>
+	       <if test="vo.createTimeBegin != null and vo.createTimeBegin != ''">
+				and create_time >= #{vo.createTimeBegin}
+		   </if>
+		   <if test="vo.createTimeEnd != null and vo.createTimeEnd != ''">
+				and create_time &lt;= #{vo.createTimeEnd}
+		   </if>
+			and is_deleted = 0
+		</where>
+	</sql>
+
+    <select id="selectPage" resultMap="userInfoMap">
+    	select <include refid="columns" />
+	    from user_info
+		<include refid="findPageWhere"/>
+		order by id desc
+    </select>
+
+</mapper>
+

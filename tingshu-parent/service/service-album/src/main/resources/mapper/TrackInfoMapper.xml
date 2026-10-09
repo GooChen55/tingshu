@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.atguigu.tingshu.album.mapper.TrackInfoMapper">
+
+
+    <select id="findUserTrackPage" resultType="com.atguigu.tingshu.vo.album.TrackListVo">
+        select
+            ti.id track_id,
+            ti.cover_url,
+            ti.track_title,
+            ti.media_duration,
+            max(if(stat_type='0701', stat_num, 0)) playStatNum,
+            max(if(stat_type='0702', stat_num, 0)) praiseStatNum,
+            max(if(stat_type='0703', stat_num, 0)) collectStatNum,
+            max(if(stat_type='0704', stat_num, 0)) commentStatNum
+        from track_info ti inner join track_stat stat
+                                      on stat.track_id = ti.id and stat.is_deleted = 0
+        <where>
+            <if test="vo.userId != null">
+                and ti.user_id = #{vo.userId}
+            </if>
+            <if test="vo.status != null and vo.status != ''">
+                and ti.status = #{vo.status}
+            </if>
+            <if test="vo.trackTitle != null and vo.trackTitle != ''">
+                and ti.track_title like concat('%', #{vo.trackTitle}, '%')
+            </if>
+            and ti.is_deleted = 0
+        </where>
+        group by ti.id
+        order by ti.create_time desc
+    </select>
+    <select id="findAlbumTrackPage" resultType="com.atguigu.tingshu.vo.album.AlbumTrackListVo">
+        select
+            ti.id track_id,
+            ti.track_title,
+            ti.order_num,
+            ti.media_duration,
+            ti.create_time,
+            max(if(stat_type = '0701', stat_num, 0)) playStatNum,
+            max(if(stat_type = '0702', stat_num, 0)) praiseStatNum,
+            max(if(stat_type = '0703', stat_num, 0)) collectStatNum,
+            max(if(stat_type = '0704', stat_num, 0)) commentStatNum
+        from track_info ti inner join track_stat stat on stat.track_id = ti.id and stat.is_deleted = 0
+        where ti.album_id = #{albumId} and ti.status = '0501' and ti.is_deleted = 0
+        group by ti.id
+        order by ti.order_num
+    </select>
+</mapper>
+

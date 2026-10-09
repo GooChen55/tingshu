@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      database: user_db
+      host: 192.168.200.6
+      port: 27017
